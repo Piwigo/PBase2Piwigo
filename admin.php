@@ -11,18 +11,8 @@ if (!file_exists(PBASE_FS_CACHE))
   mkdir(PBASE_FS_CACHE, 0755);
 }
 
-// tabsheet
-include_once(PHPWG_ROOT_PATH.'admin/include/tabsheet.class.php');
-$page['tab'] = (isset($_GET['tab'])) ? $_GET['tab'] : $page['tab'] = 'import';
-  
-$tabsheet = new tabsheet();
-$tabsheet->add('import', l10n('Import'), PBASE_ADMIN . '-import');
-// $tabsheet->add('config', l10n('Configuration'), PBASE_ADMIN . '-config');
-$tabsheet->select($page['tab']);
-$tabsheet->assign();
-
 // include page
-include(PBASE_PATH . 'admin/' . $page['tab'] . '.php');
+include(PBASE_PATH . 'admin/import.php');
 
 // template
 $template->assign(array(

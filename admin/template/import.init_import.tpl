@@ -122,7 +122,7 @@ function add_picture_to_add_queue(url, cat_id, fills) {
 {/literal}
 
 {foreach from=$categories item=cat}
-add_cat_to_add_queue('{$cat}', 0, {$RECURSIVE}, '{$FILLS}');
+add_cat_to_add_queue('{$cat}', {$PARENT_CATEGORY}, {$RECURSIVE}, '{$FILLS}');
 {/foreach}
 
 queue.set("lenght", {$categories|@count});
@@ -136,14 +136,14 @@ queue.set("lenght", {$categories|@count});
 </div>
 <div class="warnings" style="display:none;">
   <ul>
-    <li>hohiho</li>
+    <li>null</li>
   </ul>
 </div>
 
 <p>
-  <b>Nb albums</b>: <span class="nb_categories">0</span>/{$nb_categories}<br>
-  <b>Nb pictures</b>: <span class="nb_pictures">0</span>/{$nb_pictures}<br>
-  <b>Errors</b>: <span class="nb_errors">0</span><br>
+  <b>{'Nb albums'|@translate}</b>: <span class="nb_categories">0</span>/{$nb_categories}<br>
+  <b>{'Nb photos'|@translate}</b>: <span class="nb_pictures">0</span>/{$nb_pictures}<br>
+  <b>{'Errors'|@translate}</b>: <span class="nb_errors">0</span><br>
   <br>
   <img class="loading" src="{$PBASE_PATH}admin/template/loader-{$themeconf.name}.gif">
 </p>

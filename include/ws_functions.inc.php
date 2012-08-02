@@ -110,11 +110,6 @@ function ws_pBase_add_cat($params, &$service)
   $tree = json_decode(file_get_contents($tree_file), true);
   $category = &get_current_cat($tree, $params['path']);
   
-  if ($category['path'] == '/root')
-  {
-    $category['title'] = 'Import PBase';
-  }
-  
   // add category
   $query = '
 SELECT id, name
@@ -142,7 +137,7 @@ SELECT id, name
     'category_id' => $category_id,
     'pictures' => array(),
     'categories' => array(),
-    'message' => sprintf(l10n('Album "%s" added'), $category['title']),
+    'message' => sprintf(l10n('Album "%s" created'), $category['title']),
     );
     
   foreach ($category['pictures'] as &$pict)

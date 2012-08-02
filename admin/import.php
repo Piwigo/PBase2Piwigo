@@ -49,7 +49,27 @@ switch ($_GET['action'])
   
   case 'config':
   {
+    if (isset($_SESSION['pbase_empty_error']))
+    {
+      array_push($page['errors'], l10n('Import queue is empty'));
+      unset($_SESSION['pbase_empty_error']);
+    }
+    
+    // counters
+    $nb_categories = $nb_pictures = 0;
+    count_pictures_cats($tree, '/root', $nb_pictures, $nb_categories, true);
+    
+    // get piwigo categories
+    $query = '
+SELECT id, name, uppercats, global_rank
+  FROM '.CATEGORIES_TABLE.'
+;';
+    display_select_cat_wrapper($query, array(), 'associate_options');
+    display_select_cat_wrapper($query, array(), 'category_parent_options');
+    
     $template->assign(array(
+      'nb_categories' => $nb_categories-1, // don't count root
+      'nb_pictures' => $nb_pictures,
       'F_ACTION' => PBASE_ADMIN.'-import&amp;action=init_import',
       'RESET_LINK' => PBASE_ADMIN.'-import&amp;action=reset_tree',
       'TREE' => print_tree($tree, 0, 'select'),
@@ -60,10 +80,20 @@ switch ($_GET['action'])
   case 'init_import':
   {
     $categories = $_POST['categories'];
+    $nb_categories = $nb_pictures = 0;
     
-    // remove duplicate categories (in case of recursive mode)
     if (isset($_POST['recursive']))
     {
+      // we don't add "root", only it's children
+      if (@$categories[0] == '/root')
+      {
+        $temp = &get_current_cat($tree, '/root');
+        $categories = array_merge($categories, array_values(array_unique_deep($temp['categories'], 'path')));
+        $categories = array_unique($categories);
+        unset($categories[0]);
+      }
+      
+      // remove duplicate categories (in case of recursive mode)
       foreach ($categories as &$path)
       {
         if ( ($matches = array_pos('#'.$path.'/([\w/]+)#', $categories, true, true)) !== false)
@@ -76,16 +106,22 @@ switch ($_GET['action'])
     
     // count pictures and cats
     $temp_cats = $categories;
-    $nb_categories = $nb_pictures = 0;
     foreach ($temp_cats as $path)
     {
       count_pictures_cats($tree, $path, $nb_pictures, $nb_categories, isset($_POST['recursive']));
+    }
+    
+    if ($nb_pictures == 0)
+    {
+      $_SESSION['pbase_empty_error'] = true;
+      redirect(PBASE_ADMIN.'-import');
     }
     
     $template->assign(array(
       'nb_pictures' => $nb_pictures,
       'nb_categories' => $nb_categories,
       'categories' => $categories,
+      'PARENT_CATEGORY' => $_POST['parent_category'],
       'RECURSIVE' => boolean_to_string(isset($_POST['recursive'])),
       'FILLS' => implode(',', @$_POST['fills']),
       'MANAGE_LINK' => get_root_url().'admin.php?page=batch_manager&amp;cat=recent',

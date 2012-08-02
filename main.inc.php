@@ -2,8 +2,8 @@
 /*
 Plugin Name: PBase2Piwigo
 Version: auto
-Description: Extension for importing pictures from PBase
-Plugin URI: http://piwigo.org/ext/extension_view.php?eid=
+Description: Import photos from PBase
+Plugin URI: http://piwigo.org/ext/extension_view.php?eid=627
 Author: Mistic
 Author URI: http://www.strangeplanet.fr
 */

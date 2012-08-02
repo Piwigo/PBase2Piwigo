@@ -308,62 +308,115 @@ function print_tree(&$tree, $level=0, $type='list')
  * test if a download method is available
  * @return: bool
  */
-function test_remote_download()
+if (!function_exists('test_remote_download'))
 {
-  return function_exists('curl_init') || ini_get('allow_url_fopen');
+  function test_remote_download()
+  {
+    return function_exists('curl_init') || ini_get('allow_url_fopen');
+  }
 }
 
 /**
  * download a remote file
- * @param: string source
- * @param: string destination
- * @return: bool
+ *  - needs cURL or allow_url_fopen
+ *  - take care of SSL urls
+ *
+ * @param: string source url
+ * @param: mixed destination file (if true, file content is returned)
  */
-function download_remote_file($src, $dest)
+if (!function_exists('download_remote_file'))
 {
-  if (function_exists('curl_init'))
+  function download_remote_file($src, $dest)
   {
-    $newf = fopen($dest, "wb");
-    $ch = curl_init();
-    
-    curl_setopt($ch, CURLOPT_URL, $src);
-    curl_setopt($ch, CURLOPT_HEADER, 0);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept-language: en"));
-    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)');
-    curl_setopt($ch, CURLOPT_FILE, $newf);
-    
-    if (curl_exec($ch) === false)
+    if (empty($src))
     {
-      return 'file_error';
+      return false;
     }
     
-    curl_close($ch);
-    fclose($newf);
+    $return = ($dest === true) ? true : false;
     
-    return true;
-  }
-  else if (ini_get('allow_url_fopen'))
-  {
-    $opts = array(
-      'http' => array(
-        'method' => "GET",
-        'user_agent' => 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
-        'header' => "Accept-language: en",
-      )
-    );
+    /* curl */
+    if (function_exists('curl_init'))
+    {
+      if (!$return)
+      {
+        $newf = fopen($dest, "wb");
+      }
+      $ch = curl_init();
+      
+      curl_setopt($ch, CURLOPT_URL, $src);
+      curl_setopt($ch, CURLOPT_HEADER, 0);
+      curl_setopt($ch, CURLOPT_HTTPHEADER, array("Accept-language: en"));
+      curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)');
+      curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+      curl_setopt($ch, CURLOPT_MAXREDIRS, 1);
+      if (strpos($src, 'https://') !== false)
+      {
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+      }
+      if (!$return)
+      {
+        curl_setopt($ch, CURLOPT_FILE, $newf);
+      }
+      else
+      {
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+      }
+      
+      if (($out = curl_exec($ch)) === false)
+      {
+        return 'file_error';
+      }
+      
+      curl_close($ch);
+      
+      if (!$return)
+      {
+        fclose($newf);
+        return true;
+      }
+      else
+      {
+        return $out;
+      }
+    }
+    /* file get content */
+    else if (ini_get('allow_url_fopen'))
+    {
+      if (strpos($src, 'https://') !== false and !extension_loaded('openssl'))
+      {
+        return false;
+      }
+      
+      $opts = array(
+        'http' => array(
+          'method' => "GET",
+          'user_agent' => 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)',
+          'header' => "Accept-language: en",
+        )
+      );
 
-    $context = stream_context_create($opts);
-    
-    if (($file = file_get_contents($src, false, $context)) === false)
-    {
-      return 'file_error';
+      $context = stream_context_create($opts);
+      
+      if (($file = file_get_contents($src, false, $context)) === false)
+      {
+        return 'file_error';
+      }
+      
+      if (!$return)
+      {
+        file_put_contents($dest, $file);
+        return true;
+      }
+      else
+      {
+        return $file;
+      }
     }
-    file_put_contents($dest, $file);
     
-    return true;
+    return false;
   }
-  
-  return false;
 }
 
 /**
@@ -396,21 +449,24 @@ function count_pictures_cats(&$tree, $path, &$nb_pictures, &$nb_categories, $rec
  * @param: mixed key name
  * @return: array
  */
-function array_unique_deep(&$array, $key)
+if (!function_exists('array_unique_deep'))
 {
-  $values = array();
-  foreach ($array as $k1 => $row)
+  function array_unique_deep(&$array, $key)
   {
-    foreach ($row as $k2 => $v)
+    $values = array();
+    foreach ($array as $k1 => $row)
     {
-      if ($k2 == $key)
+      foreach ($row as $k2 => $v)
       {
-        $values[ $k1 ] = $v;
-        continue;
+        if ($k2 == $key)
+        {
+          $values[ $k1 ] = $v;
+          continue;
+        }
       }
     }
+    return array_unique($values);
   }
-  return array_unique($values);
 }
 
 /**
@@ -422,35 +478,38 @@ function array_unique_deep(&$array, $key)
  * @param bool search in PCRE mode
  * @return key or array of keys
  */
-function array_pos($needle, &$haystack, $match_all=false, $preg_mode=false)
+if (!function_exists('array_pos'))
 {
-  if ($match_all) $matches = array();
-  
-  foreach ($haystack as $i => $row)
+  function array_pos($needle, &$haystack, $match_all=false, $preg_mode=false)
   {
-    if (!is_array($row))
+    if ($match_all) $matches = array();
+    
+    foreach ($haystack as $i => $row)
     {
-      if (!$preg_mode)
+      if (!is_array($row))
       {
-        if (strpos($row, $needle) !== false)
+        if (!$preg_mode)
         {
-          if (!$match_all) return $i;
-          else array_push($matches, $i);
+          if (strpos($row, $needle) !== false)
+          {
+            if (!$match_all) return $i;
+            else array_push($matches, $i);
+          }
         }
-      }
-      else
-      {
-        if (preg_match($needle, $row) === 1)
+        else
         {
-          if (!$match_all) return $i;
-          else array_push($matches, $i);
+          if (preg_match($needle, $row) === 1)
+          {
+            if (!$match_all) return $i;
+            else array_push($matches, $i);
+          }
         }
       }
     }
+    
+    if ( !$match_all or !count($matches) ) return false;
+    return $matches;
   }
-  
-  if ( !$match_all or !count($matches) ) return false;
-  return $matches;
 }
 
 ?>
