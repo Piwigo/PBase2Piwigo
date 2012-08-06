@@ -66,5 +66,5 @@ jQuery('#begin_analyse').click(function() {ldelim}
 <p class="loading" style="display:none;"><img src="{$PBASE_PATH}admin/template/loader-{$themeconf.name}.gif"></p>
 </form>
 
-<pre id="preview">
+<pre id="preview" style="margin-left:10px;">
 </pre>

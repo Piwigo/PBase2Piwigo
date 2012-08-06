@@ -80,7 +80,7 @@ function add_cat_to_add_queue(path, parent_id, recursive, fills) {
           }
         }
         
-        jQuery.jGrowl(data['message'], { theme: 'success', header: successHead, life: 2000, sticky: false });
+        jQuery.jGrowl(data['message'], { theme: 'success', header: successHead, life: 4000, sticky: false });
         queue.increment("categories");
       } else {
         jQuery.jGrowl(data['result'], { theme: 'error', header: errorHead, sticky: true });

@@ -10,7 +10,7 @@ function get_file_cached($url)
 {
   // html files are cached 10000 seconds
   $cache_id_prefix = str_replace('http://www.pbase.com/', null, $url);
-  $cache_id_prefix = preg_replace('#([^a-z0-9]+)#i', null, $cache_id_prefix);
+  $cache_id_prefix = preg_replace('#([^a-z0-9-_]+)#i', null, $cache_id_prefix);
   $cache_id = $cache_id_prefix.'-'.substr(time(), 0, -4);
   
   if (!file_exists(PBASE_FS_CACHE.$cache_id))

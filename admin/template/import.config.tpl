@@ -34,7 +34,7 @@ jQuery(".categoryList").resizable({
     <b>{'Import in this album'|@translate}:</b>
     <select style="width:400px" name="parent_category" id="albumSelect" size="1">
       <option value="0">------------</option>
-      {html_options options=$associate_options}
+      {html_options options=$category_parent_options}
     </select>
     {'... or '|@translate}<a href="#" class="addAlbumOpen" title="{'create a new album'|@translate}">{'create a new album'|@translate}</a>
   </p>

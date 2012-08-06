@@ -64,7 +64,6 @@ switch ($_GET['action'])
 SELECT id, name, uppercats, global_rank
   FROM '.CATEGORIES_TABLE.'
 ;';
-    display_select_cat_wrapper($query, array(), 'associate_options');
     display_select_cat_wrapper($query, array(), 'category_parent_options');
     
     $template->assign(array(

@@ -110,6 +110,8 @@ function ws_pBase_add_cat($params, &$service)
   $tree = json_decode(file_get_contents($tree_file), true);
   $category = &get_current_cat($tree, $params['path']);
   
+  $category['title'] = pwg_db_real_escape_string($category['title']);
+  
   // add category
   $query = '
 SELECT id, name
@@ -127,7 +129,7 @@ SELECT id, name
     $category_id = ws_categories_add(array(
       'name' => $category['title'].' <!--pbase-->',
       'parent' => $params['parent_id'],
-      'comment' => $category['description'],
+      'comment' => pwg_db_real_escape_string($category['description']),
       ), $service);
     $category_id = $category_id['id'];
   }
