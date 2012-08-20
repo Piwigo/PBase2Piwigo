@@ -35,4 +35,6 @@ $lang['PBase login'] = 'Логин PBase';
 $lang['Photo "%s" imported'] = 'Фотография "%s" импортирована';
 $lang['Recursive'] = 'Рекурсивно';
 $lang['Select albums to import'] = 'Выберите альбом для импорта';
+$lang['Nb albums'] = 'Количество альбомов';
+$lang['Nb photos'] = 'Количество фотографий';
 ?>
