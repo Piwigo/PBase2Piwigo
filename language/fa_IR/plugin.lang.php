@@ -30,4 +30,11 @@ $lang['Errors'] = 'خطاها';
 $lang['Begin transfer'] = 'اغاز انتقال';
 $lang['Album "%s" created'] = 'ایجاد  "%s" آلبوم';
 $lang['Begin analyse'] = 'آغاز تجزیه و تحلیل';
+$lang['%1$d errors occured. %2$d albums and %3$d photos added.'] = '%1$d اشتباهات رخ داده است ی %2$d آلبوم ها و %3$d عکس ها افزوده شدند';
+$lang['Completed. %1$d albums and %2$d photos added.'] = 'کامل شد %1$d آلبوم ها و %2$d عکس ها افزوده شدند ';
+$lang['Fill these fields from pBase datas'] = 'پر کردن این زمینه از pBase آمده';
+$lang['Import queue is empty'] = 'صف واردات خالی است';
+$lang['Invalid user id'] = 'شناسه کاربری معتبر نیست';
+$lang['No download method available. PBase2piwigo needs cURL extension or allow_url_fopen=true'] = 'دانلود متود در دسترس نیست PBase2piwigoنیاز دارد به گسترش حلقه و یاallow_url_fopen=true';
+$lang['Recursive'] = 'بازگشتی';
 ?>
