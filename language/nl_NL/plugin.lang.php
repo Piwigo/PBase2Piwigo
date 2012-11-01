@@ -26,15 +26,15 @@ $lang['Begin analyse'] = 'Begin analyse';
 $lang['Begin transfer'] = 'Begin transfer';
 $lang['Completed. %1$d albums and %2$d photos added.'] = 'Voltooid. %1$d albums en %2$d foto\'s toegevoegd.';
 $lang['Errors'] = 'Fouten';
-$lang['Fill these fields from pBase datas'] = 'Vul deze velden in van pBase data';
-$lang['Import in this album'] = 'Importeer dit album';
+$lang['Fill these fields from pBase datas'] = 'Vul deze velden in vanuit pBase data';
+$lang['Import in this album'] = 'Importeer in dit album';
 $lang['Import queue is empty'] = 'Import wachtrij is leeg';
 $lang['Invalid user id'] = 'Ongeldig gebruikers ID';
 $lang['Nb albums'] = 'Nb albums';
 $lang['Nb photos'] = 'Nb foto\'s';
 $lang['No download method available. PBase2piwigo needs cURL extension or allow_url_fopen=true'] = 'Geen download methode beschikbaar. PBase2piwigo heeft cURL extensie of allow_url_fopen=true nodig';
 $lang['PBase login'] = 'PBase login';
-$lang['Photo "%s" imported'] = 'Foto "%s" Geïmporteerd';
+$lang['Photo "%s" imported'] = 'Foto "%s" geïmporteerd';
 $lang['Recursive'] = 'Recursief';
 $lang['Select albums to import'] = 'Selecteer albums om te importeren';
 ?>
