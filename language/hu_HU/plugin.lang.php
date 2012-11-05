@@ -35,4 +35,6 @@ $lang['Begin transfer'] = 'Átvitel kezdés';
 $lang['Begin analyse'] = 'Elemzés kezdés';
 $lang['Album "%s" created'] = 'Album "%s" létrejött';
 $lang['%1$d errors occured. %2$d albums and %3$d photos added.'] = '%1$d hiba történt. %2$d albumok és %3$d fotók kerültek hozzáadásra.';
+$lang['Nb photos'] = 'Db. fotó';
+$lang['Nb albums'] = 'Db. album';
 ?>
