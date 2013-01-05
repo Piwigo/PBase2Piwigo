@@ -12,9 +12,10 @@ if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
 global $conf;
 
-define('PBASE_PATH', PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)) . '/');
-define('PBASE_ADMIN', get_root_url() . 'admin.php?page=plugin-' . basename(dirname(__FILE__)));
-define('PBASE_FS_CACHE', $conf['data_location'].'pbase_cache/');
+define('PBASE_PATH',     PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)) . '/');
+define('PBASE_ADMIN',    get_root_url() . 'admin.php?page=plugin-' . basename(dirname(__FILE__)));
+define('PBASE_FS_CACHE', PHPWG_ROOT_PATH . $conf['data_location'] . 'pbase_cache/');
+
 
 if (defined('IN_ADMIN'))
 {
@@ -29,6 +30,7 @@ if (defined('IN_ADMIN'))
     return $menu;
   }
 }
+
 
 include_once(PBASE_PATH . 'include/ws_functions.inc.php');
 

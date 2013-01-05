@@ -1,42 +1,29 @@
 <?php
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
-define(
-  'pbase2piwigo_default_config', 
-  serialize(array(
-    ))
-  );
-
 
 function plugin_install() 
 {
   global $conf;
   
-  // conf_update_param('pbase2piwigo', pbase2piwigo_default_config);
-  
-  mkdir($conf['data_location'].'pbase_cache/', 0755);
+  mkgetdir(PHPWG_ROOT_PATH . $conf['data_location'] . 'pbase_cache/', MKGETDIR_DEFAULT&~MKGETDIR_DIE_ON_ERROR);
 }
 
 function plugin_activate()
 {
   global $conf;
-
-  // if (empty($conf['pbase2piwigo']))
-  // {
-    // conf_update_param('pbase2piwigo', pbase2piwigo_default_config);
-  // }
   
-  if (!file_exists($conf['data_location'].'pbase_cache/'))
+  if (!file_exists(PHPWG_ROOT_PATH . $conf['data_location'] . 'pbase_cache/'))
   {
-    mkdir($conf['data_location'].'pbase_cache/', 0755);
+    mkgetdir(PHPWG_ROOT_PATH . $conf['data_location'] . 'pbase_cache/', MKGETDIR_DEFAULT&~MKGETDIR_DIE_ON_ERROR);
   }
 }
 
 function plugin_uninstall() 
 {
-  // pwg_query('DELETE FROM `'. CONFIG_TABLE .'` WHERE param = "pbase2piwigo" LIMIT 1;');
+  global $conf;
   
-  rrmdir($conf['data_location'].'pbase_cache/');
+  rrmdir(PHPWG_ROOT_PATH . $conf['data_location'] . 'pbase_cache/');
 }
 
 function rrmdir($dir)
