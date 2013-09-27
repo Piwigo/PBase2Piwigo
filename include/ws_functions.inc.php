@@ -216,8 +216,8 @@ SELECT id
     
       $updates = array();
       if (in_array('fill_name', $params['fills']))    $updates['name'] = pwg_db_real_escape_string($photo['title']); 
-      if (in_array('fill_posted', $params['fills']))  $updates['date_available'] = date('Y-d-m H:i:s', strtotime($photo['date']));
-      if (in_array('fill_taken', $params['fills']))   $updates['date_creation'] = date('Y-d-m H:i:s', strtotime($photo['date']));
+      if (in_array('fill_posted', $params['fills']))  $updates['date_available'] = date('Y-m-d H:i:s', strtotime($photo['date']));
+      if (in_array('fill_taken', $params['fills']))   $updates['date_creation'] = date('Y-m-d H:i:s', strtotime($photo['date']));
       if (in_array('fill_author', $params['fills']))  $updates['author'] = pwg_db_real_escape_string($photo['author']);
       if (in_array('fill_comment', $params['fills'])) $updates['comment'] = pwg_db_real_escape_string($photo['description']);
       

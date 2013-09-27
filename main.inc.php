@@ -3,7 +3,7 @@
 Plugin Name: PBase2Piwigo
 Version: auto
 Description: Import photos from PBase
-Plugin URI: http://piwigo.org/ext/extension_view.php?eid=627
+Plugin URI: auto
 Author: Mistic
 Author URI: http://www.strangeplanet.fr
 */
