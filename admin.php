@@ -1,9 +1,8 @@
 <?php
-if (!defined('PBASE_PATH')) die('Hacking attempt!');
+defined('PBASE_PATH') or die('Hacking attempt!');
 
 global $template, $page, $conf;
 
-// $conf['pbase2piwigo'] = unserialize($conf['pbase2piwigo']);
 load_language('plugin.lang', PBASE_PATH);
 
 if (!file_exists(PBASE_FS_CACHE))
@@ -20,6 +19,5 @@ $template->assign(array(
   'PBASE_ABS_PATH'=> dirname(__FILE__).'/',
   'PBASE_ADMIN' => PBASE_ADMIN,
   ));
-$template->assign_var_from_handle('ADMIN_CONTENT', 'pbase2piwigo');
 
-?>
+$template->assign_var_from_handle('ADMIN_CONTENT', 'pbase2piwigo');

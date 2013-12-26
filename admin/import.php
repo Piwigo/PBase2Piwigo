@@ -1,13 +1,13 @@
 <?php
-if (!defined('PBASE_PATH')) die('Hacking attempt!');
+defined('PBASE_PATH') or die('Hacking attempt!');
 
 include_once(PBASE_PATH.'include/functions.inc.php');
 
 $step = null;
 
-if (test_remote_download() === false)
+if (!test_remote_download())
 {
-  array_push($page['errors'], l10n('No download method available. PBase2piwigo needs cURL extension or allow_url_fopen=true'));
+  $page['errors'][] = l10n('No download method available. PBase2piwigo needs cURL extension or allow_url_fopen=true');
 }
 else
 {
@@ -51,7 +51,7 @@ switch ($_GET['action'])
   {
     if (isset($_SESSION['pbase_empty_error']))
     {
-      array_push($page['errors'], l10n('Import queue is empty'));
+      $page['errors'][] = l10n('Import queue is empty');
       unset($_SESSION['pbase_empty_error']);
     }
     
@@ -131,6 +131,4 @@ SELECT id, name, uppercats, global_rank
 
 $template->assign('STEP', $_GET['action']);
 
-$template->set_filename('pbase2piwigo', dirname(__FILE__) . '/template/import.tpl');
-
-?>
+$template->set_filename('pbase2piwigo', realpath(PBASE_PATH . 'admin/template/import.tpl'));

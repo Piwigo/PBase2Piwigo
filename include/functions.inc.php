@@ -1,5 +1,5 @@
 <?php
-if (!defined('PBASE_PATH')) die('Hacking attempt!');
+defined('PBASE_PATH') or die('Hacking attempt!');
 
 /**
  * get the content of web-page, with cache management
@@ -305,6 +305,30 @@ function print_tree(&$tree, $level=0, $type='list')
 }
 
 /**
+ * count pictures and cats in the selected cat
+ * @param: &array tree
+ * @param: string $path
+ * @param: &int nb pictures
+ * @param: &int nb categories
+ * @param: bool recursive
+ * @return: void
+ */
+function count_pictures_cats(&$tree, $path, &$nb_pictures, &$nb_categories, $recursive=true)
+{
+  $current = &get_current_cat($tree, $path);
+  $nb_pictures+= $current['nb_pictures'];
+  $nb_categories++;
+  
+  if ( $recursive and !empty($current['categories']) )
+  {
+    foreach ($current['categories'] as $cat)
+    {
+      count_pictures_cats($tree, $cat['path'], $nb_pictures, $nb_categories, $recursive);
+    }
+  }
+}
+
+/**
  * test if a download method is available
  * @return: bool
  */
@@ -424,30 +448,6 @@ if (!function_exists('download_remote_file'))
 }
 
 /**
- * count pictures and cats in the selected cat
- * @param: &array tree
- * @param: string $path
- * @param: &int nb pictures
- * @param: &int nb categories
- * @param: bool recursive
- * @return: void
- */
-function count_pictures_cats(&$tree, $path, &$nb_pictures, &$nb_categories, $recursive=true)
-{
-  $current = &get_current_cat($tree, $path);
-  $nb_pictures+= $current['nb_pictures'];
-  $nb_categories++;
-  
-  if ( $recursive and !empty($current['categories']) )
-  {
-    foreach ($current['categories'] as $cat)
-    {
-      count_pictures_cats($tree, $cat['path'], $nb_pictures, $nb_categories, $recursive);
-    }
-  }
-}
-
-/**
  * extract unique values of the specified key in a two dimensional array
  * @param: array
  * @param: mixed key name
@@ -515,5 +515,3 @@ if (!function_exists('array_pos'))
     return $matches;
   }
 }
-
-?>

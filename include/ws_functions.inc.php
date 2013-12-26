@@ -1,5 +1,5 @@
 <?php
-if (!defined('PBASE_PATH')) die('Hacking attempt!');
+defined('PBASE_PATH') or die('Hacking attempt!');
 
 function pbase_add_ws_method($arr)
 {
@@ -13,7 +13,9 @@ function pbase_add_ws_method($arr)
       'category' => array('default' => null),
       'fills' => array('default' => 'fill_name,fill_taken,fill_author,fill_comment,fill_tags'),
       ),
-    'Used by PBase2Piwigo'
+    'Used by PBase2Piwigo',
+    null,
+    array('hidden'=>true)
     );
     
   $service->addMethod(
@@ -24,7 +26,9 @@ function pbase_add_ws_method($arr)
       'parent_id' => array('default' => null),
       'recursive' => array('default' => true),
       ),
-    'Used by PBase2Piwigo'
+    'Used by PBase2Piwigo',
+    null,
+    array('hidden'=>true)
     );
     
   $service->addMethod(
@@ -34,7 +38,9 @@ function pbase_add_ws_method($arr)
       'url' => array(),
       'path' => array(),
       ),
-    'Used by PBase2Piwigo'
+    'Used by PBase2Piwigo',
+    null,
+    array('hidden'=>true)
     );
 }
 
@@ -55,7 +61,7 @@ function ws_pBase_parse($params, &$service)
   
   include_once(PBASE_PATH.'include/functions.inc.php');
   
-  if (test_remote_download() === false)
+  if (!test_remote_download())
   {
     return new PwgError(null, l10n('No download method available'));
   }
@@ -126,12 +132,12 @@ SELECT id, name
   }
   else
   {
-    $category_id = ws_categories_add(array(
+    $new_cat = $service->invoke('pwg.categories.add', array(
       'name' => $category['title'].' <!--pbase-->',
       'parent' => $params['parent_id'],
       'comment' => pwg_db_real_escape_string($category['description']),
-      ), $service);
-    $category_id = $category_id['id'];
+      ));
+    $category_id = $new_cat['id'];
   }
   
   // return datas for AJAX queue
@@ -139,18 +145,18 @@ SELECT id, name
     'category_id' => $category_id,
     'pictures' => array(),
     'categories' => array(),
-    'message' => sprintf(l10n('Album "%s" created'), $category['title']),
+    'message' => l10n('Album "%s" created', $category['title']),
     );
     
   foreach ($category['pictures'] as &$pict)
   {
-    array_push($output['pictures'], $pict['url']);
+    $output['pictures'][] = $pict['url'];
   }
   if ($params['recursive'])
   {
     foreach ($category['categories'] as &$cat)
     {
-      array_push($output['categories'], $cat['path']);
+      $output['categories'][] = $cat['path'];
     }
   }
   
@@ -230,7 +236,7 @@ SELECT id
           );
       }
       
-      if ( !empty($photo['keywords']) and in_array('fill_tags', $params['fills']) )
+      if (!empty($photo['keywords']) and in_array('fill_tags', $params['fills']))
       {
         $raw_tags = implode(',', $photo['keywords']);
         set_tags(get_tag_ids($raw_tags), $photo['image_id']);
@@ -238,7 +244,5 @@ SELECT id
     }
   }
   
-  return sprintf(l10n('Photo "%s" imported'), $photo['title']);
+  return l10n('Photo "%s" imported', $photo['title']);
 }
-
-?>
