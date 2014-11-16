@@ -10,11 +10,21 @@ Author URI: http://www.strangeplanet.fr
 
 defined('PHPWG_ROOT_PATH') or die('Hacking attempt!');
 
+if (basename(dirname(__FILE__)) != 'pbase2piwigo')
+{
+  add_event_handler('init', 'pbase_error');
+  function pbase_error()
+  {
+    global $page;
+    $page['errors'][] = 'PBase2Piwigo folder name is incorrect, uninstall the plugin and rename it to "pbase2piwigo"';
+  }
+  return;
+}
+
 global $conf;
 
-define('PBASE_ID',       basename(dirname(__FILE__)));
-define('PBASE_PATH',     PHPWG_PLUGINS_PATH . PBASE_ID . '/');
-define('PBASE_ADMIN',    get_root_url() . 'admin.php?page=plugin-' . PBASE_ID);
+define('PBASE_PATH',     PHPWG_PLUGINS_PATH . 'pbase2piwigo/');
+define('PBASE_ADMIN',    get_root_url() . 'admin.php?page=plugin-pbase2piwigo');
 define('PBASE_FS_CACHE', PHPWG_ROOT_PATH . $conf['data_location'] . 'pbase_cache/');
 
 
