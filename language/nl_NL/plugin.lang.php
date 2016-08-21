@@ -32,9 +32,8 @@ $lang['Import queue is empty'] = 'Import wachtrij is leeg';
 $lang['Invalid user id'] = 'Ongeldig gebruikers ID';
 $lang['Nb albums'] = 'Nb albums';
 $lang['Nb photos'] = 'Nb foto\'s';
-$lang['No download method available. PBase2piwigo needs cURL extension or allow_url_fopen=true'] = 'Geen download methode beschikbaar. PBase2piwigo heeft cURL extensie of allow_url_fopen=true nodig';
+$lang['No download method available. PBase2piwigo needs cURL extension or allow_url_fopen=true'] = 'Geen download-methode beschikbaar. PBase2piwigo heeft cURL extensie of allow_url_fopen=true nodig';
 $lang['PBase login'] = 'PBase login';
 $lang['Photo "%s" imported'] = 'Foto "%s" geïmporteerd';
 $lang['Recursive'] = 'Recursief';
 $lang['Select albums to import'] = 'Selecteer albums om te importeren';
-?>
